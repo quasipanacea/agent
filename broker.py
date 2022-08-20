@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
 import json
 import struct
+import subprocess
 import sys
 
 
@@ -27,8 +27,38 @@ def sendMessage(encodedMessage):
     sys.stdout.buffer.write(encodedMessage['content'])
     sys.stdout.buffer.flush()
 
-while True:
-    receivedMessage = getMessage()
-    if receivedMessage == "ping":
-        sendMessage(encodeMessage("pong3"))
+def launchKaxon():
+    subprocess.run(['xdg-open', 'https://localhost:3000'])
 
+with open('broker.log', 'a') as f:
+    while True:
+        receivedMessage = getMessage()
+
+        f.write(receivedMessage + '\n')
+        f.flush()
+
+        if ':' in receivedMessage:
+            colon_index = receivedMessage.index(':')
+
+            protocol = receivedMessage[:colon_index]
+            content = receivedMessage[colon_index+1:]
+            if protocol == 'yt-checkid':
+                print('fired ' + content)
+        else:
+            if receivedMessage == "ping":
+                sendMessage(encodeMessage("pong3"))
+            elif receivedMessage == 'open-kaxon':
+                # launchKaxon()
+                pass
+
+
+# with open('log', 'w') as f:
+#     while True:
+#         receivedMessage = getMessage()
+#         f.write(len(receivedMessage))
+#         f.flush()
+
+# with open('log', 'w') as f:
+#     while True:
+#         for line in fileinput.input():
+#             print("got line:", line)
