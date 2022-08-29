@@ -1,7 +1,7 @@
 {
 	"name": "dev.kofler.kaxon.native",
 	"description": "Kaxon native component for Brave extension",
-	"path": "/storage/ur/storage_home/Docs/Programming/repos/Groups/kaxon/webext-broker/broker.py",
+	"path": "/storage/ur/storage_home/Docs/Programming/repos/Groups/kaxon/webext-broker/launch.sh",
 	"type": "stdio",
 	"allowed_origins": ["chrome-extension://lnalcmpiefakfmdjdjjmfigimnmojoab/"]
 }
