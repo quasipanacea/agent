@@ -1,2 +1,3 @@
 *.log
 common
+__pycache__/
