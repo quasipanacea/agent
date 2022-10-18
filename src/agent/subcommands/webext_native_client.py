@@ -5,7 +5,6 @@ import sys
 import requests
 import argparse
 
-
 def decodeMessage():
     rawLength = sys.stdin.buffer.read(4)
     if len(rawLength) == 0:
@@ -13,7 +12,6 @@ def decodeMessage():
     messageLength = struct.unpack("@I", rawLength)[0]
     message = sys.stdin.buffer.read(messageLength).decode("utf-8")
     return json.loads(message)
-
 
 def sendMessage(s):
     def encode(messageContent):
@@ -26,10 +24,8 @@ def sendMessage(s):
     sys.stdout.buffer.write(encodedMessage["content"])
     sys.stdout.buffer.flush()
 
-
 def launchKaxon():
     subprocess.run(["xdg-open", "https://localhost:3000"])
-
 
 def webext_native_client():
     while True:

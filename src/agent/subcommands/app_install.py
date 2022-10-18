@@ -11,10 +11,16 @@ from jinja2 import Environment, Template
 # 	done
 # }
 
-def install(typ: str):
-    install_aggregator(typ)
-    install_agent(typ)
-    install_server(typ)
+def app_install(dev: bool, nightly: bool):
+    if dev:
+        install_aggregator('dev')
+        install_agent('dev')
+        install_server('dev')
+
+    if nightly:
+        install_aggregator('nightly')
+        install_agent('nightly')
+        install_server('nightly')
 
 #     # Desktop files
 #     applications_dir = util.get_xdg_data_dir() / 'applications'
@@ -48,8 +54,9 @@ exec "$aggregator_dir/build/aggregator" "$@"
         os.chmod(bin_file, 0o755)
 
     elif deploy_type == 'nightly':
-        aggregator_dir = util.download_and_cd_nightly_artifact('aggregator')
-        pass
+        util.download_and_cd_nightly_artifact('aggregator')
+        bin_file.write_bytes(Path('./build/bin/aggregator').read_bytes())
+        bin_file.chmod(0o755)
     else:
         raise Exception("Bad deploy_type")
 

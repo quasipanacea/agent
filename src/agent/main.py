@@ -1,36 +1,39 @@
 import argparse
 import sys
-from agent import subcommands
+import typer
 
+from agent import subcommands, util
 
 def run():
-    parser = argparse.ArgumentParser(description="Run the Kaxon agent")
-    subparsers = parser.add_subparsers(required=True, dest="subcommand")
+    app()
 
-    parser_buildall = subparsers.add_parser('app-build')
-    parser_install = subparsers.add_parser("app-install")
-    parser_uninstall = subparsers.add_parser("app-uninstall")
+app = typer.Typer()
 
-    parser_launcher = subparsers.add_parser("launch")
-    parser_webext_native_client = subparsers.add_parser("webext-native-client")
+@app.command()
+def app_build():
+    subcommands.app_build()
 
-    if len(sys.argv) < 2:
-        parser.print_usage()
-        sys.exit(1)
+@app.command()
+def app_install(
+    dev: bool = typer.Option(False),
+    nightly: bool = typer.Option(False)
+):
+    util.must_either_dev_or_nightly(dev, nightly)
+    subcommands.app_install(dev, nightly)
 
-    args = parser.parse_args()
-    if args.subcommand == 'app-build':
-        subcommands.build()
-    elif args.subcommand == "app-install":
-        # subcommands.install('dev')
-        subcommands.install('nightly')
-    elif args.subcommadn == "app-uninstall":
-        subcommands.uninstall('dev')
-        subcommands.install('nightly')
-    elif args.subcommand.launch() == "launch":
-        subcommands.launch()
-    elif args.subcommand == "webext-native-client":
-        subcommands.webext_native_client()
-    else:
-        print("Subcommand not found")
-        exit(1)
+@app.command()
+def app_uninstall(
+    dev: bool = typer.Option(False),
+    nightly: bool = typer.Option(False)
+):
+    util.must_either_dev_or_nightly(dev, nightly)
+    subcommands.app_uninstall(dev, nightly)
+
+@app.command()
+def launch():
+    subcommands.launch()
+
+@app.command()
+def webext_native_client():
+    subcommands.webext_native_client()
+

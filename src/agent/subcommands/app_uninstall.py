@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 
-def uninstall(deploy_type: str):
+def app_uninstall(dev: bool, nightly: bool):
     print("Uninstall")

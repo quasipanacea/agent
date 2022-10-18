@@ -1,6 +1,7 @@
 from genericpath import isdir
 import os
 from pathlib import Path
+import shutil
 
 def get_xdg_data_dir() -> Path:
     if "XDG_DATA_HOME" in os.environ:
@@ -38,6 +39,19 @@ def get_dir_in_workspace(repo_name: str):
     return repo_dir
 
 def download_and_cd_nightly_artifact(repo_name: str):
-    workspace_dir = get_workspace_dir()
-    print(workspace_dir)
-    # os.system(f"curl -#SfLo \"{repo_name}.tar.gz\" \"https://github.com/project-kaxon/{repo_name}/releases/download/nightly/build.tar.gz\"")
+    init_dir = Path(get_workspace_dir()).parent
+    os.chdir(init_dir)
+
+    os.makedirs('nightly', exist_ok=True)
+    os.chdir('nightly')
+
+    os.remove(f'{repo_name}.tar.gz')
+    shutil.rmtree('./build')
+
+    os.system(f"curl -#SfLo \"{repo_name}.tar.gz\" \"https://github.com/project-kaxon/{repo_name}/releases/download/nightly/build.tar.gz\"")
+    os.system(f'tar xf ./{repo_name}.tar.gz')
+
+def must_either_dev_or_nightly(dev: bool, nightly: bool):
+    if (not dev and not nightly):
+        print("Must pass at least --dev or --nightly, or both")
+        exit(1)

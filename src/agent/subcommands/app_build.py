@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Callable
 from agent import util
 
-def build():
+def app_build():
     cd('aggregator', build_aggregator)
     cd('agent', build_agent)
     cd('client-web', build_client_web)

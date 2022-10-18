@@ -8,6 +8,10 @@ task.build() {
 	poetry bundle venv './build' --clear
 }
 
+task.run() {
+	poetry run agent "$@"
+}
+
 task.release-nightly() {
 	mkdir -p './output'
 
