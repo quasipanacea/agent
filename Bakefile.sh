@@ -4,11 +4,14 @@ task.init() {
 	poetry install
 }
 
+task.build() {
+	poetry bundle venv './build' --clear
+}
+
 task.release-nightly() {
 	mkdir -p './output'
 
-	# Build
-	poetry bundle venv './build' --clear
+	task.build
 	tar czf './build.tar.gz' './build'
 	mv './build.tar.gz' './output'
 
