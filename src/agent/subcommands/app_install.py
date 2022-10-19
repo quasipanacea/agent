@@ -4,24 +4,17 @@ import pathlib
 from agent import util
 from jinja2 import Environment, Template
 
-# task.symlink() {
-# 	local file="dev.kofler.kaxon.native.json"
-# 	for browser_path in 'BraveSoftware/Brave-Browser' 'microsoft-edge'; do
-# 		ln -Tfs "$PWD/$file" "${XDG_CONFIG_HOME:-$HOME/.config}/$browser_path/NativeMessagingHosts/$file"
-# 	done
-# }
-
 def app_install(dev: bool, nightly: bool):
     if dev:
         install_aggregator('dev')
         install_agent('dev')
         install_server('dev')
-
+        install_webext('dev')
     if nightly:
         install_aggregator('nightly')
         install_agent('nightly')
         install_server('nightly')
-
+        install_webext('nightly')
 #     # Desktop files
 #     applications_dir = util.get_xdg_data_dir() / 'applications'
 #     os.makedirs(applications_dir, exist_ok=True)
@@ -34,7 +27,7 @@ def app_install(dev: bool, nightly: bool):
 #     )
 #     Path(file_output).write_text(template_output)
 
-def install_aggregator(deploy_type: str):
+def install_aggregator(deploy_type: str) -> None:
     if deploy_type == '':
         postfix = ''
     else:
@@ -60,7 +53,7 @@ exec "$aggregator_dir/build/aggregator" "$@"
     else:
         raise Exception("Bad deploy_type")
 
-def install_agent(deploy_type: str):
+def install_agent(deploy_type: str) -> None:
     if deploy_type == '':
         postfix = ''
     else:
@@ -104,10 +97,34 @@ KAXON_CLIENT_DIR=$client_dir exec deno run --allow-all "$server_dir/build/bundle
 ''')
         os.chmod(bin_file, 0o755)
     elif deploy_type == 'nightly':
-        pass
+        raise Exception("shit, nightly?")
     else:
         raise Exception("Bad deploy_type")
 
+def install_webext(deploy_type: str) -> None:
+    if deploy_type == '':
+        postfix = ''
+    else:
+        postfix = '-' + deploy_type
+
+    bin_dir = util.get_bin_dir()
+    bin_file = Path(os.path.join(bin_dir, f'kaxon-agent{postfix}'))
+    agent_dir = util.get_dir_in_workspace('agent')
+
+    workspace_dir = util.get_workspace_dir()
+    kaxon_launch_bin = Path(workspace_dir) / 'agent/bin/kaxon-launch'
+    if deploy_type == 'dev':
+       util.install_native_json_manifest(f'''{{
+	"name": "dev.kofler.kaxon.native",
+	"description": "Kaxon native component for Brave extension",
+	"path": "{kaxon_launch_bin}",
+	"type": "stdio",
+	"allowed_origins": ["chrome-extension://ahhfnedchjgnbplbclgfmhmgoeeecncn/"]
+}}''')
+    elif deploy_type == 'nightly':
+        raise Exception("shit, nightly?")
+    else:
+        raise Exception("Bad deploy_type")
 # def doTheThing():
 #     # Update the cache
 #     mimeInfoCachePath = applicationsDir / "mimeinfo.cache"

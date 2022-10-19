@@ -3,6 +3,15 @@ import os
 from pathlib import Path
 import shutil
 
+def get_xdg_config_dir() -> Path:
+    if "XDG_CONFIG_HOME" in os.environ:
+        xdg_config_home = os.environ.get("XDG_CONFIG_HOME")
+
+        if len(xdg_config_home) > 0 and xdg_config_home[:1] == "/":
+            return Path(xdg_config_home)
+
+    return Path.home() / ".config"
+
 def get_xdg_data_dir() -> Path:
     if "XDG_DATA_HOME" in os.environ:
         xdgDataHome = os.environ.get("XDG_DATA_HOME")
@@ -55,3 +64,15 @@ def must_either_dev_or_nightly(dev: bool, nightly: bool):
     if (not dev and not nightly):
         print("Must pass at least --dev or --nightly, or both")
         exit(1)
+
+def install_native_json_manifest(content: str):
+    xdg_config_dir = get_xdg_config_dir()
+
+    file_name = 'dev.kofler.kaxon.native.json'
+    for browser_name in ["BraveSoftware/Brave-Browser", "BraveSoftware/Brave-Browser-Beta", "BraveSoftware/Brave-Browser-Nightly", "microsoft-edge", "microsoft-edge-beta", "microsoft-edge-dev"]:
+        manifest_file = Path(xdg_config_dir) / browser_name / "NativeMessagingHosts" / file_name
+        manifest_file.parent.mkdir(0o755, True, exist_ok=True)
+
+        if os.path.exists(manifest_file):
+            os.remove(manifest_file)
+        manifest_file.write_text(content)
