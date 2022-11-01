@@ -57,7 +57,7 @@ def download_and_cd_nightly_artifact(repo_name: str):
     os.remove(f'{repo_name}.tar.gz')
     shutil.rmtree('./build')
 
-    os.system(f"curl -#SfLo \"{repo_name}.tar.gz\" \"https://github.com/project-kaxon/{repo_name}/releases/download/nightly/build.tar.gz\"")
+    os.system(f"curl -#SfLo \"{repo_name}.tar.gz\" \"https://github.com/cosmic-knowledge/{repo_name}/releases/download/nightly/build.tar.gz\"")
     os.system(f'tar xf ./{repo_name}.tar.gz')
 
 def must_either_dev_or_nightly(dev: bool, nightly: bool):
