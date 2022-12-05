@@ -1,7 +1,7 @@
 {
-	"name": "dev.kofler.kaxon.native",
-	"description": "Kaxon native component for Brave extension",
-	"path": "/storage/ur/storage_home/Docs/Programming/repos/Groups/quazipanacea/init/repos/agent/bin/kaxon-launch",
+	"name": "dev.kofler.quazipanacea.native",
+	"description": "Quazipanacea native component for Brave extension",
+	"path": "/storage/ur/storage_home/Docs/Programming/repos/Groups/quazipanacea/init/repos/agent/bin/quazipanacea-launch",
 	"type": "stdio",
 	"allowed_origins": ["chrome-extension://ahhfnedchjgnbplbclgfmhmgoeeecncn/"]
 }

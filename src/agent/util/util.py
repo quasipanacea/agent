@@ -68,7 +68,7 @@ def must_either_dev_or_nightly(dev: bool, nightly: bool):
 def install_native_json_manifest(content: str):
     xdg_config_dir = get_xdg_config_dir()
 
-    file_name = 'dev.kofler.kaxon.native.json'
+    file_name = 'dev.kofler.quazipanacea.native.json'
     for browser_name in ["BraveSoftware/Brave-Browser", "BraveSoftware/Brave-Browser-Beta", "BraveSoftware/Brave-Browser-Nightly", "microsoft-edge", "microsoft-edge-beta", "microsoft-edge-dev"]:
         manifest_file = Path(xdg_config_dir) / browser_name / "NativeMessagingHosts" / file_name
         manifest_file.parent.mkdir(0o755, True, exist_ok=True)

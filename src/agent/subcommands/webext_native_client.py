@@ -24,7 +24,7 @@ def sendMessage(s):
     sys.stdout.buffer.write(encodedMessage["content"])
     sys.stdout.buffer.flush()
 
-def launchKaxon():
+def launchQuazipanacea():
     subprocess.run(["xdg-open", "https://localhost:3000"])
 
 def webext_native_client():

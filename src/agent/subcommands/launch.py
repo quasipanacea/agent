@@ -3,7 +3,7 @@ import sys
 
 
 def launch():
-    data = sys.argv[1][len("kaxon://") :]
+    data = sys.argv[1][len("quazipanacea://") :]
 
     colon_index = data.index(":") if ":" in data else -1
     root_url = "http://localhost:8080"
