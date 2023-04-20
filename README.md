@@ -1,3 +1,3 @@
 # agent
 
-See the [organization](https://github.com/quazipanacea) for details.
+Archived in favor of [cli](https://github.com/quasipanacea/cli).
